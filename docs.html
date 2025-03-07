@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
             background: #f9f9f9;
+
+            font-family: "Indie Flower", cursive;
+            font-weight: 800;
+            font-style: normal;
         }
 
         .container {
@@ -79,7 +85,7 @@
             <button onclick="fetchTasks()">Try It Out</button>
             <pre id="getResponse">Response will appear here...</pre>
         </div>
-        
+
         <!-- GET /tasks/pending -->
         <div class="endpoint">
             <h2>GET /tasks/pending</h2>
@@ -119,7 +125,13 @@
             </ul>
             </p>
             <p><strong>Try It Out:</strong> Fill in the details and click the button.</p>
-            <textarea id="taskData">{"title": "New Task", "description": "Task details", "status": "pending"}</textarea>
+            <textarea id="taskData">
+{
+    "title": "New Task",
+    "description": "Task details",
+    "status": "pending"
+}
+            </textarea>
             <button onclick="createTask()">Try It Out</button>
             <pre id="postResponse">Response will appear here...</pre>
         </div>
@@ -130,7 +142,13 @@
             <p><strong>API Endpoint:</strong> Updates an existing task by ID with the provided details.</p>
             <p><strong>Try It Out:</strong> Fill in the task ID and new details, then click the button.</p>
             <p><strong>Example:</strong> <code>/tasks/605c72ef1532074f6f1b77b0</code></p>
-            <textarea id="taskUpdateData">{"title": "Updated Task", "description": "Updated task details", "status": "in-progress"}</textarea>
+            <textarea id="taskUpdateData">
+{
+    "title": "Updated Task",
+    "description": "Updated task details",
+    "status": "in-progress"
+}
+            </textarea>
             <button onclick="updateTask()">Try It Out</button>
             <pre id="putResponse">Response will appear here...</pre>
         </div>
@@ -141,7 +159,8 @@
             <p><strong>API Endpoint:</strong> Deletes an existing task by ID.</p>
             <p><strong>Try It Out:</strong> Fill in the task ID, then click the button to delete the task.</p>
             <p><strong>Example:</strong> <code>/tasks/605c72ef1532074f6f1b77b0</code></p>
-            <input type="text" id="taskIdToDelete" placeholder="Enter Task ID" />
+            <input style="width: 18rem; height: 2rem; font-size: inherit;" type="text" id="taskIdToDelete"
+                placeholder="Enter Task ID" />
             <button onclick="deleteTask()">Try It Out</button>
             <pre id="deleteResponse">Response will appear here...</pre>
         </div>
