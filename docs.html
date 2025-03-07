@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f9f9f9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        .endpoint {
+            padding: 15px;
+            border-left: 5px solid #4CAF50;
+            margin: 20px 0;
+            background: #eef;
+            border-radius: 5px;
+        }
+
+        .tryout {
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            margin-top: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        pre {
+            background: #222;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>API Documentation</h1>
+        <p>This API allows you to manage tasks efficiently. Below are the endpoints with live execution features.</p>
+
+        <!-- GET /tasks -->
+        <div class="endpoint">
+            <h2>GET /tasks</h2>
+            <p><strong>API Endpoint:</strong> Retrieves all tasks from the database.</p>
+            <p><strong>Try It Out:</strong> Click below to fetch all tasks.</p>
+            <button onclick="fetchTasks()">Try It Out</button>
+            <pre id="getResponse">Response will appear here...</pre>
+        </div>
+
+        <!-- GET /tasks/progress -->
+        <div class="endpoint">
+            <h2>GET /tasks/progress</h2>
+            <p><strong>API Endpoint:</strong> Retrieves all tasks that are in progress.</p>
+            <p><strong>Try It Out:</strong> Click below to fetch in-progress tasks.</p>
+            <button onclick="fetchProgressTasks()">Try It Out</button>
+            <pre id="getProgressResponse">Response will appear here...</pre>
+        </div>
+
+        <!-- GET /tasks/done -->
+        <div class="endpoint">
+            <h2>GET /tasks/done</h2>
+            <p><strong>API Endpoint:</strong> Retrieves all tasks that are done.</p>
+            <p><strong>Try It Out:</strong> Click below to fetch completed tasks.</p>
+            <button onclick="fetchDoneTasks()">Try It Out</button>
+            <pre id="getDoneResponse">Response will appear here...</pre>
+        </div>
+
+        <!-- POST /tasks -->
+        <div class="endpoint">
+            <h2>POST /tasks</h2>
+            <p><strong>API Endpoint:</strong> Creates a new task with the given details.</p>
+            <p><strong>Valid Status Values:</strong>
+            <ul>
+                <li><code>pending</code> - The task is yet to be started.</li>
+                <li><code>in-progress</code> - The task is currently being worked on.</li>
+                <li><code>done</code> - The task has been completed.</li>
+            </ul>
+            </p>
+            <p><strong>Try It Out:</strong> Fill in the details and click the button.</p>
+            <textarea id="taskData">{"title": "New Task", "description": "Task details", "status": "pending"}</textarea>
+            <button onclick="createTask()">Try It Out</button>
+            <pre id="postResponse">Response will appear here...</pre>
+        </div>
+
+        <!-- PUT /tasks/:id -->
+        <div class="endpoint">
+            <h2>PUT /tasks/:id</h2>
+            <p><strong>API Endpoint:</strong> Updates an existing task by ID with the provided details.</p>
+            <p><strong>Try It Out:</strong> Fill in the task ID and new details, then click the button.</p>
+            <p><strong>Example:</strong> <code>/tasks/605c72ef1532074f6f1b77b0</code></p>
+            <textarea id="taskUpdateData">{"title": "Updated Task", "description": "Updated task details", "status": "in-progress"}</textarea>
+            <button onclick="updateTask()">Try It Out</button>
+            <pre id="putResponse">Response will appear here...</pre>
+        </div>
+
+        <!-- DELETE /tasks/:id -->
+        <div class="endpoint">
+            <h2>DELETE /tasks/:id</h2>
+            <p><strong>API Endpoint:</strong> Deletes an existing task by ID.</p>
+            <p><strong>Try It Out:</strong> Fill in the task ID, then click the button to delete the task.</p>
+            <p><strong>Example:</strong> <code>/tasks/605c72ef1532074f6f1b77b0</code></p>
+            <input type="text" id="taskIdToDelete" placeholder="Enter Task ID" />
+            <button onclick="deleteTask()">Try It Out</button>
+            <pre id="deleteResponse">Response will appear here...</pre>
+        </div>
+    </div>
+
+    <script>
+        async function fetchTasks() {
+            const response = await fetch('/tasks');
+            const data = await response.json();
+            document.getElementById('getResponse').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchProgressTasks() {
+            const response = await fetch('/tasks/progress');
+            const data = await response.json();
+            document.getElementById('getProgressResponse').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchDoneTasks() {
+            const response = await fetch('/tasks/done');
+            const data = await response.json();
+            document.getElementById('getDoneResponse').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function createTask() {
+            const task = JSON.parse(document.getElementById('taskData').value);
+            const response = await fetch('/tasks', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(task)
+            });
+            const data = await response.json();
+            document.getElementById('postResponse').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function updateTask() {
+            const task = JSON.parse(document.getElementById('taskUpdateData').value);
+            const taskId = prompt("Enter Task ID to update:");
+
+            if (!taskId) {
+                alert("Task ID is required");
+                return;
+            }
+
+            const response = await fetch(`/tasks/${taskId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(task)
+            });
+            const data = await response.json();
+            document.getElementById('putResponse').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function deleteTask() {
+            const taskId = document.getElementById('taskIdToDelete').value;
+
+            if (!taskId) {
+                alert("Task ID is required");
+                return;
+            }
+
+            const response = await fetch(`/tasks/${taskId}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            document.getElementById('deleteResponse').innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+
+</html>
