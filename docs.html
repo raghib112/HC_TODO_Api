@@ -79,6 +79,15 @@
             <button onclick="fetchTasks()">Try It Out</button>
             <pre id="getResponse">Response will appear here...</pre>
         </div>
+        
+        <!-- GET /tasks/pending -->
+        <div class="endpoint">
+            <h2>GET /tasks/pending</h2>
+            <p><strong>API Endpoint:</strong> Retrieves all tasks that are in progress.</p>
+            <p><strong>Try It Out:</strong> Click below to fetch in-progress tasks.</p>
+            <button onclick="fetchPendingTasks()">Try It Out</button>
+            <pre id="getPendingResponse">Response will appear here...</pre>
+        </div>
 
         <!-- GET /tasks/progress -->
         <div class="endpoint">
@@ -155,6 +164,12 @@
             const response = await fetch('/tasks/done');
             const data = await response.json();
             document.getElementById('getDoneResponse').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchPendingTasks() {
+            const response = await fetch('/tasks/pending');
+            const data = await response.json();
+            document.getElementById('getPendingResponse').innerText = JSON.stringify(data, null, 2);
         }
 
         async function createTask() {

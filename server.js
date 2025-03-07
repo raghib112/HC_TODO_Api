@@ -46,6 +46,11 @@ app.get('/tasks/done', async (req, res) => {
     res.json(tasks);
 });
 
+app.get('/tasks/pending', async (req, res) => {
+    const tasks = await Task.find({ status: "pending" });
+    res.json(tasks);
+});
+
 app.post('/tasks', async (req, res) => {
     try {
         const { title, description, status, priority, dueDate } = req.body;
